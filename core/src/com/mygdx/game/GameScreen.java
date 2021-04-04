@@ -117,7 +117,7 @@ public class GameScreen implements Screen {
     }
 
     private void detectCollision() {
-        if (bird.getY() < 30)
+        if (bird.getY() <= 30)
             state = State.FALL;
 
         if (wallCollision(bird.getX(), bird.getY()))

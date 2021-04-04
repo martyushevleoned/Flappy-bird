@@ -27,9 +27,9 @@ public class Bird {
 
     public void draw(Batch batch) {
 
-        if (yVelocity < -0.5 || GameScreen.state == State.START_SCREEN || GameScreen.state == State.RESULTS || GameScreen.state == State.LOST_SCREEN)
+        if (yVelocity < -0.3 || GameScreen.state == State.START_SCREEN || GameScreen.state == State.RESULTS || GameScreen.state == State.LOST_SCREEN)
             batch.draw(sprite[0], x, y, 9, 6, width, height, 1, 1, angle);
-        else if (yVelocity < 1)
+        else if (yVelocity < 0.4)
             batch.draw(sprite[1], x, y, 9, 6, width, height, 1, 1, angle);
         else
             batch.draw(sprite[2], x, y, 9, 6, width, height, 1, 1, angle);
