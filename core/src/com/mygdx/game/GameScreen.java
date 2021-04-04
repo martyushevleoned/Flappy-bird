@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
             score.drawResults(batch, WORLD_WIDTH);
 
         if (state == State.START_SCREEN) {
-            batch.draw(tapToStart, (WORLD_WIDTH - 57f) / 2f, WORLD_HEIGHT / 2f - 43f, 57, 49);
+            batch.draw(tapToStart, (WORLD_WIDTH - 57f) / 2f , WORLD_HEIGHT / 2f - 43f, 57, 49);
             batch.draw(getReady, (WORLD_WIDTH - 92) / 2f, WORLD_HEIGHT / 2f + 35, 92, 25);
         }
 
