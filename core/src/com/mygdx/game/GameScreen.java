@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
         //bird
         bird.setAngle(0);
         bird.setYVelocity(0);
-        bird.setY((WORLD_HEIGHT - bird.getWidth()) / 2);
+        bird.setY((WORLD_HEIGHT - bird.getHeight()) / 2);
 
         //ground
         ground.setX(0);
