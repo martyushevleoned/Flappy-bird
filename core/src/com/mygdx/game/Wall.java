@@ -10,18 +10,19 @@ public class Wall {
 
     Random rnd = new Random();
 
-    float indent = 50;
-    float xVelocity = 140;
-    float emptySpace = 140;
-    float width = 52, height = 640;
-    float x, y = 160;
+    float indent = 25;
+    float xVelocity = 80;
+    float emptySpace = 70;
+    float width = 26, height = 320;
+    float x, y = 80;
 
     public Wall(float x) {
         this.x = x;
     }
 
     Texture tubes = new Texture("tubes.png");
-    TextureRegion[] sprite = {new TextureRegion(tubes, 0, 0, 26, 320),
+    TextureRegion[] sprite = {
+            new TextureRegion(tubes, 0, 0, 26, 320),
             new TextureRegion(tubes, 26, 0, 26, 320)};
 
     public void draw(Batch batch) {
@@ -34,16 +35,22 @@ public class Wall {
         if (x + width <= 0) {
             x += WORLD_WIDTH * 1.5;
             generate(WORLD_HEIGHT);
+            GameScreen.score.setActualScore(GameScreen.score.getActualScore() + 1);
+            emptySpace--;
         }
     }
 
-    public void generate(int WORLD_HEIGHT){
-        y = rnd.nextInt((int) (WORLD_HEIGHT - (indent * 2) - 60 - emptySpace));
-        y += 60 + indent;
+    public void generate(int WORLD_HEIGHT) {
+        y = rnd.nextInt((int) (WORLD_HEIGHT - (indent * 2) - 30 - emptySpace));
+        y += 30 + indent;
     }
 
     public void setX(float x) {
         this.x = x;
+    }
+
+    public void setEmptySpace(float emptySpace) {
+        this.emptySpace = emptySpace;
     }
 
     public float getEmptySpace() {

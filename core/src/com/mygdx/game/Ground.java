@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Ground {
 
-    float xVelocity = 140;
-    float width = 336, height = 60;
+    float xVelocity = 80;
+    float width = 168, height = 30;
     float x = 0;
 
     Texture ground = new Texture("ground.png");

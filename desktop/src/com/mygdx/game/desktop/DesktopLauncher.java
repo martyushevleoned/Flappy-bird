@@ -7,8 +7,8 @@ import com.mygdx.game.FlappyBirdGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 288;
-		config.height = 512;
+		config.width = 300;
+		config.height = 550;
 		new LwjglApplication(new FlappyBirdGame(), config);
 	}
 }

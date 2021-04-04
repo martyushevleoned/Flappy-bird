@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,18 +18,23 @@ public class GameScreen implements Screen {
 
     //graphics
     private final SpriteBatch batch;
-    private Texture background;
+    private final Texture background;
     private final Texture tapToStart;
+    private final Texture getReady;
 
     //world parameters
-    private final int WORLD_WIDTH = 288;
-    private final int WORLD_HEIGHT = 512;
+    private final int WORLD_WIDTH = 144;
+    private final int WORLD_HEIGHT = 256;
 
     //game objects
     Bird bird;
     Ground ground;
     Wall[] wall;
-    public static State state;
+    static Score score;
+    static State state;
+
+    //prefs
+    static Preferences pref;
 
     GameScreen() {
 
@@ -36,6 +42,7 @@ public class GameScreen implements Screen {
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         background = new Texture("darkfon.png");
         tapToStart = new Texture("taptostart.png");
+        getReady = new Texture("getready.png");
         batch = new SpriteBatch();
 
         bird = new Bird(WORLD_WIDTH, WORLD_HEIGHT);
@@ -46,6 +53,13 @@ public class GameScreen implements Screen {
         wall[1].generate(WORLD_HEIGHT);
 
         state = State.START_SCREEN;
+        score = new Score();
+
+        pref = Gdx.app.getPreferences("score");
+        if (!pref.contains("key"))
+            pref.putInteger("key", 0);
+
+        score.setMaxScore(pref.getInteger("key"));
     }
 
     @Override
@@ -54,17 +68,19 @@ public class GameScreen implements Screen {
 
         //detect
         detectInput();
-        detectCollision();
+        if (state == State.GAMEPLAY)
+            detectCollision();
 
+        //update
         if (state == State.GAMEPLAY) {
-            //update
             wall[0].update(deltaTime, WORLD_WIDTH, WORLD_HEIGHT);
             wall[1].update(deltaTime, WORLD_WIDTH, WORLD_HEIGHT);
             ground.update(deltaTime);
             bird.update(deltaTime);
-
         } else if (state == State.FALL)
             bird.update(deltaTime);
+        else if (state == State.RESULTS)
+            score.update(deltaTime, WORLD_HEIGHT);
 
 
         //draw
@@ -72,11 +88,15 @@ public class GameScreen implements Screen {
         wall[0].draw(batch);
         wall[1].draw(batch);
         ground.draw(batch);
+        score.drawScore(batch, WORLD_WIDTH, WORLD_HEIGHT);
         bird.draw(batch);
+        if (GameScreen.state == State.RESULTS || GameScreen.state == State.LOST_SCREEN)
+            score.drawResults(batch, WORLD_WIDTH);
 
-        if (state == State.START_SCREEN)
-            batch.draw(tapToStart, (WORLD_WIDTH - 114f) / 2, (WORLD_HEIGHT - 98f) / 2, 114, 98);
-
+        if (state == State.START_SCREEN) {
+            batch.draw(tapToStart, (WORLD_WIDTH - 57f) / 2f, WORLD_HEIGHT / 2f - 43f, 57, 49);
+            batch.draw(getReady, (WORLD_WIDTH - 92) / 2f, WORLD_HEIGHT / 2f + 35, 92, 25);
+        }
 
         batch.end();
     }
@@ -97,7 +117,7 @@ public class GameScreen implements Screen {
     }
 
     private void detectCollision() {
-        if (bird.getY() <= 60)
+        if (bird.getY() < 30)
             state = State.FALL;
 
         if (wallCollision(bird.getX(), bird.getY()))
@@ -135,6 +155,12 @@ public class GameScreen implements Screen {
         wall[1].setX(WORLD_WIDTH * 1.75f);
         wall[0].generate(WORLD_HEIGHT);
         wall[1].generate(WORLD_HEIGHT);
+        wall[0].setEmptySpace(70);
+        wall[1].setEmptySpace(70);
+
+        //score
+        score.setActualScore(0);
+        score.setYGameOver(-21);
     }
 
     @Override
