@@ -44,11 +44,12 @@ public class Bird {
         else {
             yVelocity = 0;
             GameScreen.state = State.RESULTS;
-            if (GameScreen.score.getActualScore() > GameScreen.score.getMaxScore())
+            if (GameScreen.score.getActualScore() > GameScreen.score.getMaxScore()) {
                 GameScreen.score.setMaxScore(GameScreen.score.getActualScore());
 
-            GameScreen.pref.putInteger("key", GameScreen.score.getActualScore());
-            GameScreen.pref.flush();
+                GameScreen.pref.putInteger("key", GameScreen.score.getActualScore());
+                GameScreen.pref.flush();
+            }
         }
 
         if (GameScreen.state != State.LOST_SCREEN && GameScreen.state != State.RESULTS)
